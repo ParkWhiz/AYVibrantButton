@@ -59,6 +59,7 @@ typedef enum {
 
 // the background color when vibrancy effect is nil, or not supported.
 @property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic) PWColorType backgroundColorType;
 
 // this is the only method to initialize a vibrant button
 - (instancetype)initWithFrame:(CGRect)frame style:(AYVibrantButtonStyle)style;
