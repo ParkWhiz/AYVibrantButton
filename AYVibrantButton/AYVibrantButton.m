@@ -114,6 +114,7 @@
 {
     [super awakeFromNib];
     self.backgroundColor = [PWTheme colorForType:self.backgroundColorType];
+    self.font = [PWTheme fontForType:self.fontType ofSize:self.titleLabel.font.pointSize];
     [self setTitle:nil forState:UIControlStateNormal];
 }
 
