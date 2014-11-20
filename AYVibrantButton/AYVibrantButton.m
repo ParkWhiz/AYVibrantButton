@@ -335,6 +335,15 @@
 	self.highlightedOverlay.hideRightBorder = hideRightBorder;
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    if(!enabled) {
+        self.backgroundColor = [UIColor lightGrayColor];
+    }
+}
+
 @end
 
 /** AYVibrantButtonOverlay **/
