@@ -45,8 +45,6 @@
 	__strong UIColor *_backgroundColor;
 }
 
-@property (nonatomic, assign) AYVibrantButtonStyle style;
-
 #ifdef __IPHONE_8_0
 @property (nonatomic, strong) UIVisualEffectView *visualEffectView;
 #endif
@@ -160,6 +158,20 @@
     [self addTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown | UIControlEventTouchDragInside];
     [self addTarget:self action:@selector(touchUp) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchDragOutside | UIControlEventTouchCancel];
     
+}
+
+- (void)setStyle:(AYVibrantButtonStyle)style
+{
+    _style = style;
+    
+    if(style == AYVibrantButtonStyleTranslucent) {
+#ifdef __IPHONE_8_0
+        // add the default vibrancy effect
+        self.vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+#endif
+    } else {
+        self.vibrancyEffect = nil;
+    }
 }
 
 - (void)layoutSubviews

@@ -61,6 +61,7 @@ typedef enum {
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic) PWColorType backgroundColorType;
 @property (nonatomic) PWFontType fontType;
+@property (nonatomic) AYVibrantButtonStyle style;
 
 // this is the only method to initialize a vibrant button
 - (instancetype)initWithFrame:(CGRect)frame style:(AYVibrantButtonStyle)style;
