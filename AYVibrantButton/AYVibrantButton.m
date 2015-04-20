@@ -160,6 +160,15 @@
     
 }
 
+- (void)setTextColor:(UIColor *)textColor
+{
+    _textColor = textColor;
+    
+    assert(self.normalOverlay);
+    self.normalOverlay.textColor = textColor;
+    self.highlightedOverlay.textColor = textColor;
+}
+
 - (void)setStyle:(AYVibrantButtonStyle)style
 {
     _style = style;
@@ -444,12 +453,12 @@
 		style.lineBreakMode = NSLineBreakByTruncatingTail;
 		style.alignment = NSTextAlignmentCenter;
 		
-		if (self.style == AYVibrantButtonOverlayStyleInvert) {
+		if (self.style == AYVibrantButtonOverlayStyleInvert && !self.textColor) {
 			// this will make the drawInRect below clear the text area
 			CGContextSetBlendMode(context, kCGBlendModeClear);
-		}
+        }
 		
-		[self.text drawInRect:CGRectMake(0.0, (size.height - self.textHeight) / 2, size.width, self.textHeight) withAttributes:@{ NSFontAttributeName:self.font, NSForegroundColorAttributeName:self.backgroundColor, NSParagraphStyleAttributeName:style }];
+        [self.text drawInRect:CGRectMake(0.0, (size.height - self.textHeight) / 2, size.width, self.textHeight) withAttributes:@{ NSFontAttributeName:self.font, NSForegroundColorAttributeName:self.textColor ?: self.backgroundColor, NSParagraphStyleAttributeName:style }];
 	}
 }
 
