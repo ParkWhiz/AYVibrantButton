@@ -50,7 +50,7 @@ typedef enum {
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, copy)   NSString *text;
-@property (nonatomic) UIColor *textColor;
+@property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIFont *font;
 
 #ifdef __IPHONE_8_0
@@ -92,7 +92,7 @@ typedef enum {
 @property (nonatomic, copy)   NSString *text;
 @property (nonatomic, strong) UIFont *font;
 
-@property (nonatomic) UIColor *textColor;
+@property (nonatomic, strong) UIColor *textColor;
 // background color
 @property (nonatomic, strong) UIColor *backgroundColor;
 
