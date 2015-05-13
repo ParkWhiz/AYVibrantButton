@@ -27,7 +27,7 @@
 //  SOFTWARE.
 
 @import UIKit;
-#import "PWTheme.h"
+#import "PWThemeConstants.h"
 
 /** AYVibrantButton **/
 

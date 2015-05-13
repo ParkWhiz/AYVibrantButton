@@ -27,6 +27,7 @@
 //  SOFTWARE.
 
 #import "AYVibrantButton.h"
+#import "PWTheme.h"
 
 #define kAYVibrantButtonDefaultAnimationDuration 0.15
 #define kAYVibrantButtonDefaultAlpha 1.0
