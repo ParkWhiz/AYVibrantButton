@@ -310,6 +310,7 @@
 	_icon = icon;
 	self.normalOverlay.icon = icon;
 	self.highlightedOverlay.icon = icon;
+    [self setNeedsDisplay];
 }
 
 - (void)setText:(NSString *)text {
@@ -420,34 +421,13 @@
 	}
 	
 	CGContextClipToRect(context, boxRect);
-	
-	// draw icon
-	if (self.icon != nil) {
-		
-		CGSize iconSize = self.icon.size;
-		CGRect iconRect = CGRectMake((size.width - iconSize.width) / 2,
-									 (size.height - iconSize.height) / 2,
-									 iconSize.width,
-									 iconSize.height);
-		
-		if (self.style == AYVibrantButtonOverlayStyleNormal) {
-			// ref: http://blog.alanyip.me/tint-transparent-images-on-ios/
-			CGContextSetBlendMode(context, kCGBlendModeNormal);
-			CGContextFillRect(context, iconRect);
-			CGContextSetBlendMode(context, kCGBlendModeDestinationIn);
-		} else if (self.style == AYVibrantButtonOverlayStyleInvert) {
-			// this will make the CGContextDrawImage below clear the image area
-			CGContextSetBlendMode(context, kCGBlendModeDestinationOut);
-		}
-		
-		CGContextTranslateCTM(context, 0, size.height);
-		CGContextScaleCTM(context, 1.0, -1.0);
-		
-		// for some reason, drawInRect does not work here
-		CGContextDrawImage(context, iconRect, self.icon.CGImage);
-	}
-	
-	// draw text
+    CGSize iconSize = self.icon.size;
+    CGFloat const space = 5.0;
+    CGSize textSize = [self.text sizeWithFont:self.font constrainedToSize:CGSizeMake(size.width, size.height)];
+    CGFloat totalWidth = textSize.width + iconSize.width + space;
+    CGRect textRect = CGRectMake(size.width/2.0 - totalWidth/2.0, (size.height - self.textHeight) / 2, textSize.width, self.textHeight);
+
+    // draw text
 	if (self.text != nil) {
 		
 		NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
@@ -459,8 +439,34 @@
 			CGContextSetBlendMode(context, kCGBlendModeClear);
         }
 		
-        [self.text drawInRect:CGRectMake(0.0, (size.height - self.textHeight) / 2, size.width, self.textHeight) withAttributes:@{ NSFontAttributeName:self.font, NSForegroundColorAttributeName:self.textColor ?: self.backgroundColor, NSParagraphStyleAttributeName:style }];
+        [self.text drawInRect:textRect withAttributes:@{ NSFontAttributeName:self.font, NSForegroundColorAttributeName:self.textColor ?: self.backgroundColor, NSParagraphStyleAttributeName:style }];
 	}
+    
+    // draw icon
+    if (self.icon != nil) {
+        
+        
+        CGRect iconRect = CGRectMake(textRect.origin.x + textSize.width + space,
+                                     (size.height - iconSize.height) / 2,
+                                     iconSize.width,
+                                     iconSize.height);
+        
+        if (self.style == AYVibrantButtonOverlayStyleNormal) {
+            // ref: http://blog.alanyip.me/tint-transparent-images-on-ios/
+            CGContextSetBlendMode(context, kCGBlendModeNormal);
+            CGContextFillRect(context, iconRect);
+            CGContextSetBlendMode(context, kCGBlendModeDestinationIn);
+        } else if (self.style == AYVibrantButtonOverlayStyleInvert) {
+            // this will make the CGContextDrawImage below clear the image area
+            CGContextSetBlendMode(context, kCGBlendModeDestinationOut);
+        }
+        
+        CGContextTranslateCTM(context, 0, size.height);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        
+        // for some reason, drawInRect does not work here
+        CGContextDrawImage(context, iconRect, self.icon.CGImage);
+    }
 }
 
 #pragma mark - Override Getters
@@ -497,7 +503,7 @@
 }
 
 - (void)setText:(NSString *)text {
-	_icon = nil;
+//	_icon = nil;
 	_text = [text copy];
 	[self _updateTextHeight];
 	[self setNeedsDisplay];
